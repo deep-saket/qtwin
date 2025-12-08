@@ -84,6 +84,13 @@ pm.render_all(dummy)
 PY
 ```
 
+10) **View plots via Dash web app**
+```bash
+# Generate plots first (e.g., run a demo), then launch the viewer
+python -m quantum_twin.demos.dash_app --outputs outputs --port 8050
+# Open http://localhost:8050 to interactively view the gallery (auto-refreshes every 5s)
+```
+
 ## Config Structure (step format)
 Each YAML file lists steps with `class` + `params`:
 ```yaml
