@@ -1,0 +1,25 @@
+parameter_estimator:
+  class: quantum_twin.optimisation.ParameterEstimator.ParameterEstimator
+  params:
+    device: cpu
+    drift: 0.02
+control_optimizer:
+  class: quantum_twin.optimisation.GradientControlOptimizer.GradientControlOptimizer
+  params:
+    device: cpu
+    steps: 200
+    learning_rate: 0.01
+    scale: 0.5
+surrogate_fitter:
+  class: quantum_twin.optimisation.SurrogateFitter.SurrogateFitter
+  params:
+    device: cpu
+    epochs: 10
+metrics:
+  class: quantum_twin.metrics.MetricsFactory.MetricsFactory
+  params:
+    enabled: [fidelity]
+summary:
+  class: quantum_twin.training.TrainingParams.TrainingParams
+  params:
+    note: "Optimisation pipeline for parameters and controls."

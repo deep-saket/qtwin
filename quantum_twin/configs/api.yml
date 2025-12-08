@@ -1,0 +1,22 @@
+simulator:
+  t_max: 1.0
+  steps: 100
+  t1: 30.0
+  t2: 20.0
+  tphi: 0.01
+  drift: 0.02
+  pulse_scale: 0.5
+  use_lindblad: true
+surrogate:
+  onnx_path: artifacts/pinn.onnx
+optimizer:
+  parameter_estimator: {}
+  control_optimizer:
+    device: cpu
+    steps: 200
+    learning_rate: 0.01
+    scale: 0.5
+  surrogate_fitter: {}
+pulse: {}
+algorithms: {}
+demo_data: {}

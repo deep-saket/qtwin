@@ -1,0 +1,59 @@
+dataloader:
+  class: quantum_twin.dataloader.QuantumTrajectoryLoader.QuantumTrajectoryLoader
+  params:
+    batch_size: 64
+    shuffle: true
+    num_workers: 0
+    device: cpu
+    trajectories: 4
+    use_lindblad: true
+    simulator:
+      t_max: 1.0
+      steps: 100
+      t1: 30.0
+      t2: 20.0
+      tphi: 0.01
+      drift: 0.02
+      pulse_scale: 0.5
+
+model:
+  class: quantum_twin.models.ModelFactory.ModelFactory
+  params:
+    input_dim: 4
+    layers: [4, 128, 128, 4]
+    activation: tanh
+    dropout: 0.05
+    fourier_features: 2
+
+loss:
+  class: quantum_twin.losses.LossFactory.LossFactory
+  params:
+    weights:
+      schrodinger: 1.0
+      lindblad: 1.0
+      trace: 0.5
+      hermitian: 0.5
+      positivity: 0.5
+    use_lindblad: true
+    t1: 30.0
+    t2: 20.0
+    tphi: 0.01
+    drift: 0.02
+
+metrics:
+  class: quantum_twin.metrics.MetricsFactory.MetricsFactory
+  params:
+    enabled: [fidelity, trace_distance, positivity]
+
+training_params:
+  class: quantum_twin.training.TrainingParams.TrainingParams
+  params:
+    learning_rate: 1.0e-3
+    training_steps: 200
+    log_interval: 20
+    checkpoint_interval: 100
+    checkpoint_dir: artifacts/checkpoints
+    keep_last: 3
+    tensorboard_dir: runs
+    onnx_path: artifacts/pinn.onnx
+    onnx_opset: 17

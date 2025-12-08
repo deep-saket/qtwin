@@ -1,0 +1,79 @@
+SIMULATION_PLOTS:
+  - class: quantum_twin.plotting.simulation.DensityMatrixPlot.DensityMatrixPlot
+    params:
+      save_path: outputs/density_matrix.png
+      cmap: viridis
+  - class: quantum_twin.plotting.simulation.BlochSpherePlot.BlochSpherePlot
+    params:
+      save_path: outputs/bloch.png
+      animate: false
+  - class: quantum_twin.plotting.simulation.PulsePlot.PulsePlot
+    params:
+      save_path: outputs/pulses.png
+  - class: quantum_twin.plotting.simulation.PopulationPlot.PopulationPlot
+    params:
+      save_path: outputs/population.png
+
+SURROGATE_PLOTS:
+  - class: quantum_twin.plotting.surrogate.PredictionPlot.PredictionPlot
+    params:
+      save_path: outputs/predict.png
+  - class: quantum_twin.plotting.surrogate.ErrorPlot.ErrorPlot
+    params:
+      save_path: outputs/error.png
+  - class: quantum_twin.plotting.surrogate.ResidualPlot.ResidualPlot
+    params:
+      save_path: outputs/residual.png
+  - class: quantum_twin.plotting.surrogate.EigenvalueTrajectoryPlot.EigenvalueTrajectoryPlot
+    params:
+      save_path: outputs/eigs.png
+  - class: quantum_twin.plotting.surrogate.LossCurvePlot.LossCurvePlot
+    params:
+      save_path: outputs/loss.png
+  - class: quantum_twin.plotting.surrogate.HeatmapPlot.HeatmapPlot
+    params:
+      save_path: outputs/heatmap.png
+
+OPTIMISATION_PLOTS:
+  - class: quantum_twin.plotting.optimisation.ParameterEstimationPlot.ParameterEstimationPlot
+    params:
+      save_path: outputs/param_est.png
+  - class: quantum_twin.plotting.optimisation.ControlPulseOptimPlot.ControlPulseOptimPlot
+    params:
+      save_path: outputs/control_optim.png
+  - class: quantum_twin.plotting.optimisation.CostLandscapePlot.CostLandscapePlot
+    params:
+      save_path: outputs/cost_landscape.png
+  - class: quantum_twin.plotting.optimisation.SurrogateFitComparisonPlot.SurrogateFitComparisonPlot
+    params:
+      save_path: outputs/surrogate_compare.png
+
+TRAINING_PLOTS:
+  - class: quantum_twin.plotting.training.TrainingCurvePlot.TrainingCurvePlot
+    params:
+      save_path: outputs/training_curve.png
+  - class: quantum_twin.plotting.training.CheckpointDriftPlot.CheckpointDriftPlot
+    params:
+      save_path: outputs/checkpoint_drift.png
+
+WHATIF_PLOTS:
+  - class: quantum_twin.plotting.whatif.NoiseScanPlot.NoiseScanPlot
+    params:
+      save_path: outputs/noise_scan.png
+  - class: quantum_twin.plotting.whatif.PulseSweepPlot.PulseSweepPlot
+    params:
+      save_path: outputs/pulse_sweep.png
+  - class: quantum_twin.plotting.whatif.SensitivityPlot.SensitivityPlot
+    params:
+      save_path: outputs/sensitivity.png
+  - class: quantum_twin.plotting.whatif.ScenarioComparisonRadarPlot.ScenarioComparisonRadarPlot
+    params:
+      save_path: outputs/radar.png
+
+DEPLOYMENT_PLOTS:
+  - class: quantum_twin.plotting.deployment.ONNXBenchmarksPlot.ONNXBenchmarksPlot
+    params:
+      save_path: outputs/onnx_benchmark.png
+  - class: quantum_twin.plotting.deployment.DriftOverServingPlot.DriftOverServingPlot
+    params:
+      save_path: outputs/drift_serving.png

@@ -1,0 +1,38 @@
+simulator:
+  class: quantum_twin.physics.DataSimulator.DataSimulator
+  params:
+    device: cpu
+    t_max: 1.0
+    steps: 200
+    t1: 30.0
+    t2: 20.0
+    tphi: 0.01
+    drift: 0.02
+    pulse_scale: 0.5
+    use_lindblad: true
+export:
+  class: quantum_twin.dataloader.QuantumTrajectoryLoader.QuantumTrajectoryLoader
+  params:
+    device: cpu
+    trajectories: 8
+    use_lindblad: true
+    batch_size: 64
+    shuffle: true
+    num_workers: 0
+    simulator:
+      t_max: 1.0
+      steps: 200
+      t1: 30.0
+      t2: 20.0
+      tphi: 0.01
+      drift: 0.02
+      pulse_scale: 0.5
+      use_lindblad: true
+metrics:
+  class: quantum_twin.metrics.MetricsFactory.MetricsFactory
+  params:
+    enabled: [fidelity, trace_distance, positivity]
+summary:
+  class: quantum_twin.training.TrainingParams.TrainingParams
+  params:
+    note: "Simulation-only pipeline; plug outputs into training dataloader if needed."
