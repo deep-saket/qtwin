@@ -4,8 +4,6 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
 
 import torch
-from torch.utils.tensorboard import SummaryWriter
-
 from quantum_twin.core.BaseComponent import BaseComponent
 from quantum_twin.core.Constants import DEFAULT_ONNX_PATH
 from quantum_twin.deployment.ONNXExporter import ONNXExporter
@@ -60,19 +58,22 @@ class Trainer(BaseComponent):
     def _log_metrics(self, step: int, rho_pred: torch.Tensor, rho_true: torch.Tensor) -> None:
         for metric in self.metrics:
             values = metric(rho_pred, rho_true)
-            for name, val in values.items():
-                self.tb._writer.add_scalar(f"metrics/{name}", val, step)
+            self.tb.log_scalars(step, {f"metrics/{name}": val for name, val in values.items()})
 
     def train(self) -> None:
         steps = int(self.params.get("training_steps", 1000))
         log_interval = int(self.params.get("log_interval", 50))
         ckpt_interval = int(self.params.get("checkpoint_interval", 200))
 
+        param_dtype = next(self.model.parameters()).dtype
+        param_device = next(self.model.parameters()).device
+        complex_dtype = torch.cfloat if param_dtype == torch.float32 else torch.cdouble
+
         for step, batch in zip(range(steps), self.dataloader):
             t, controls, rho_true = batch
-            t = t.double()
-            controls = controls.double()
-            rho_true = rho_true.to(torch.cdouble)
+            t = t.to(device=param_device, dtype=param_dtype)
+            controls = controls.to(device=param_device, dtype=param_dtype)
+            rho_true = rho_true.to(device=param_device, dtype=complex_dtype)
 
             self.optimizer.zero_grad()
             losses = self._compute_losses((t, controls, rho_true))
@@ -103,8 +104,10 @@ class Trainer(BaseComponent):
                 self.checkpoints.save(step, self.model, self.optimizer)
 
         sample_batch = next(iter(self.dataloader))
-        export_input = {"t": sample_batch[0].double(), "controls": sample_batch[1].double()}
+        export_input = {
+            "t": sample_batch[0].to(device=param_device, dtype=param_dtype),
+            "controls": sample_batch[1].to(device=param_device, dtype=param_dtype),
+        }
         self.exporter.export(self.model, export_input)
         self.tb.close()
         self.logger.info("Training complete")
-

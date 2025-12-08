@@ -10,6 +10,7 @@ simulator:
     drift: 0.02
     pulse_scale: 0.5
     use_lindblad: true
+    output_path: artifacts/datasets/simulation.pt
 export:
   class: quantum_twin.dataloader.QuantumTrajectoryLoader.QuantumTrajectoryLoader
   params:

@@ -14,7 +14,7 @@ class SimulatorAPI(BaseComponent):
     def __init__(self, params: Dict[str, Any]) -> None:
         super().__init__()
         self._params = params
-        self._simulator = DataSimulator(params)
+        self._simulator = DataSimulator(**params)
         self.logger.info("SimulatorAPI ready with params %s", params)
 
     def simulate_schrodinger(self, trajectories: int = 1) -> Dict[str, torch.Tensor]:

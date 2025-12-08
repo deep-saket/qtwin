@@ -20,3 +20,8 @@ class ControlCalibrationDemo(BaseDemo):
         )
         self.logger.info("ControlCalibrationDemo completed")
         return {"optimized_controls": optimized, "simulation": sim_data}
+
+
+if __name__ == "__main__":
+    demo = ControlCalibrationDemo()
+    demo.run_demo()

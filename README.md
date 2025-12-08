@@ -40,12 +40,47 @@ python -m quantum_twin.simulate --config quantum_twin/configs/simulation.yml
 ```bash
 python -m quantum_twin.optimise --config quantum_twin/configs/optimiser.yml
 ```
-6) **Serve ONNX**
+6) **Run demos (persona flows)**
+```bash
+# Physicist / simulation-focused
+python -m quantum_twin.demos.physicist_demo.PhysicistDemo
+
+# Control calibration
+python -m quantum_twin.demos.control_demo.ControlCalibrationDemo
+
+# Stakeholder dashboard
+python -m quantum_twin.demos.stakeholder_demo.StakeholderDashboardDemo
+
+# Algorithm end-user demo
+python -m quantum_twin.demos.algorithm_demo.AlgorithmEndUserDemo
+```
+
+7) **Run API orchestrator (pydash-style high-level access)**
+```bash
+python -c "from quantum_twin.api.QuantumTwinAPI import QuantumTwinAPI; twin = QuantumTwinAPI('quantum_twin/configs/api.yml'); print(twin.simulator.simulate_lindblad(1)['rho'].shape)"
+```
+
+8) **Serve ONNX**
 ```bash
 python - <<'PY'
 from quantum_twin.deployment.ModelWrapper import ModelWrapper
 wrapper = ModelWrapper("artifacts/pinn.onnx")
 print(wrapper.run(t=0.05, controls=[0.1, -0.1, 0.0]))
+PY
+```
+
+9) **Generate plots with pydash_plotting**
+```bash
+python - <<'PY'
+import numpy as np
+from quantum_twin.plotting.PlotManager import PlotManager
+
+pm = PlotManager("quantum_twin/configs/plotting.yml")
+dummy = {
+    "SIMULATION_PLOTS": {"rho": np.zeros((5,2,2),dtype=np.complex128), "t": np.linspace(0,1,5), "controls": np.zeros((5,3))},
+    "SURROGATE_PLOTS": {"rho_true": np.zeros((5,2,2),dtype=np.complex128), "rho_pred": np.zeros((5,2,2),dtype=np.complex128), "t": np.linspace(0,1,5)},
+}
+pm.render_all(dummy)
 PY
 ```
 
@@ -77,3 +112,4 @@ component_name:
 - Python 3.10+, fully typed, Google-style docstrings, PEP8
 - All classes inherit `BaseComponent` for uniform logging
 - Extend via new config steps; swap loss/model/simulator without changing code
+- Generated artifacts/datasets are stored under `artifacts/` (gitignored); use `output_path` in simulator config and `input_path` in training dataloader to reuse datasets.

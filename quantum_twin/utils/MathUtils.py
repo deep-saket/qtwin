@@ -25,7 +25,6 @@ class MathUtils(BaseComponent):
     @staticmethod
     def enforce_psd(matrix: torch.Tensor) -> torch.Tensor:
         evals, evecs = torch.linalg.eigh(matrix)
-        clipped = torch.clamp(evals, min=1e-8)
+        clipped = torch.clamp(evals.real, min=1e-8).to(evecs.dtype)
         psd = evecs @ torch.diag_embed(clipped) @ evecs.conj().transpose(-1, -2)
         return MathUtils.enforce_trace_one(psd)
-

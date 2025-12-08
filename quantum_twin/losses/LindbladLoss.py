@@ -25,7 +25,7 @@ class LindbladLoss(PhysicsLoss):
     def _dissipator(self, rho: torch.Tensor) -> torch.Tensor:
         dissipator = torch.zeros_like(rho)
         for l_op in self._ops:
-            l = l_op.to(rho.device)
+            l = l_op.to(device=rho.device, dtype=rho.dtype)
             term1 = l @ rho @ l.conj().transpose(-1, -2)
             term2 = 0.5 * (l.conj().transpose(-1, -2) @ l @ rho + rho @ l.conj().transpose(-1, -2) @ l)
             dissipator = dissipator + term1 - term2
@@ -50,7 +50,7 @@ class LindbladLoss(PhysicsLoss):
 
         residual = drho_dt + 1j * comm - dissipator
         physics = torch.mean(torch.abs(residual) ** 2)
-        reg = self._reg.compute_constraints(rho_pred)
+        reg = self._reg.compute(rho_pred)
         total = self._weights.get("lindblad", 1.0) * physics + reg
         self.logger.debug("LindbladLoss physics=%.4f reg=%.4f", physics.item(), reg.item())
         return total

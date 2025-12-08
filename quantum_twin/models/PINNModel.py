@@ -72,7 +72,8 @@ class PINNModel(BaseComponent, nn.Module):
         l21_im = raw[:, 3]
 
         l21 = l21_re + 1j * l21_im
-        chol = torch.zeros((raw.shape[0], 2, 2), dtype=torch.cdouble, device=raw.device)
+        complex_dtype = torch.cfloat if raw.dtype == torch.float32 else torch.cdouble
+        chol = torch.zeros((raw.shape[0], 2, 2), dtype=complex_dtype, device=raw.device)
         chol[:, 0, 0] = l11
         chol[:, 1, 0] = l21
         chol[:, 1, 1] = l22

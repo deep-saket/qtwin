@@ -10,8 +10,8 @@ from quantum_twin.optimisation.ControlOptimizerBase import ControlOptimizerBase
 class GaussianControlOptimizer(ControlOptimizerBase):
     """Samples controls from a Gaussian distribution."""
 
-    def __init__(self, params: Dict[str, Any]) -> None:
-        super().__init__(params)
+    def __init__(self, **params: Dict[str, Any]) -> None:
+        super().__init__(**params)
         self._mean = float(self._params.get("mean", 0.0))
         self._std = float(self._params.get("std", 0.2))
         self._seed = int(self._params.get("seed", 0))

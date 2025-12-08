@@ -19,3 +19,8 @@ class AlgorithmEndUserDemo(BaseDemo):
         )
         self.logger.info("AlgorithmEndUserDemo completed")
         return {"grover": grover_result, "simulation": sim_data}
+
+
+if __name__ == "__main__":
+    demo = AlgorithmEndUserDemo()
+    demo.run_demo()

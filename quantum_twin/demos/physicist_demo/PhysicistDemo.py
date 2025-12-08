@@ -20,3 +20,8 @@ class PhysicistDemo(BaseDemo):
         self.plot_manager.render_group("SURROGATE_PLOTS", **residuals)
         self.logger.info("PhysicistDemo completed")
         return {"simulation": data}
+
+
+if __name__ == "__main__":
+    demo = PhysicistDemo()
+    demo.run_demo()

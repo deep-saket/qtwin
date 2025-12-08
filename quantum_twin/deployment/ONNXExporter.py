@@ -20,15 +20,17 @@ class ONNXExporter(BaseComponent):
     def export(self, model: torch.nn.Module, sample_input: Dict[str, torch.Tensor]) -> Path:
         self._export_path.parent.mkdir(parents=True, exist_ok=True)
         model.eval()
-        torch.onnx.export(
-            model,
-            (sample_input["t"], sample_input["controls"]),
-            self._export_path.as_posix(),
-            input_names=["t", "controls"],
-            output_names=["rho"],
-            opset_version=self._opset,
-            dynamic_axes={"t": {0: "batch"}, "controls": {0: "batch"}, "rho": {0: "batch"}},
-        )
-        self.logger.info("Exported ONNX to %s", self._export_path)
+        try:
+            torch.onnx.export(
+                model,
+                (sample_input["t"], sample_input["controls"]),
+                self._export_path.as_posix(),
+                input_names=["t", "controls"],
+                output_names=["rho"],
+                opset_version=self._opset,
+                dynamic_axes={"t": {0: "batch"}, "controls": {0: "batch"}, "rho": {0: "batch"}},
+            )
+            self.logger.info("Exported ONNX to %s", self._export_path)
+        except ModuleNotFoundError as exc:  # onnxscript/onnx missing
+            self.logger.warning("ONNX export skipped (%s). Install onnx/onnxscript to enable export.", exc)
         return self._export_path
-

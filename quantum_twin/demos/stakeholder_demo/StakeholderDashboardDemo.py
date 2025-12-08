@@ -14,3 +14,8 @@ class StakeholderDashboardDemo(BaseDemo):
         self.plot_manager.render_group("WHATIF_PLOTS", **metrics)
         self.logger.info("StakeholderDashboardDemo completed")
         return {"simulation": sim_data, "metrics": metrics}
+
+
+if __name__ == "__main__":
+    demo = StakeholderDashboardDemo()
+    demo.run_demo()

@@ -4,7 +4,9 @@ dataloader:
     batch_size: 64
     shuffle: true
     num_workers: 0
-    device: cpu
+    device: mps
+    # Optional: use a pre-generated dataset
+    input_path: artifacts/datasets/simulation.pt
     trajectories: 4
     use_lindblad: true
     simulator:

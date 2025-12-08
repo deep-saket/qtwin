@@ -10,8 +10,8 @@ from quantum_twin.optimisation.ControlOptimizerBase import ControlOptimizerBase
 class GradientControlOptimizer(ControlOptimizerBase):
     """Optimizes controls via simple gradient descent on a quadratic surrogate."""
 
-    def __init__(self, params: Dict[str, Any]) -> None:
-        super().__init__(params)
+    def __init__(self, **params: Dict[str, Any]) -> None:
+        super().__init__(**params)
         self._steps = int(self._params.get("steps", 100))
         self._lr = float(self._params.get("learning_rate", 1e-2))
         self._init_scale = float(self._params.get("scale", 0.5))

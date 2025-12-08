@@ -10,8 +10,8 @@ from quantum_twin.optimisation.OptimizerBase import OptimizerBase
 class ParameterEstimator(OptimizerBase):
     """Estimates Hamiltonian parameters from data."""
 
-    def __init__(self, params: Dict[str, Any]) -> None:
-        super().__init__(params)
+    def __init__(self, **params: Dict[str, Any]) -> None:
+        super().__init__(**params)
         self.logger.info("ParameterEstimator ready")
 
     def run(self) -> Dict[str, float]:
@@ -19,4 +19,3 @@ class ParameterEstimator(OptimizerBase):
         estimated = {"drift": float(self._params.get("drift", 0.0))}
         self.logger.info("Estimated parameters %s", estimated)
         return estimated
-

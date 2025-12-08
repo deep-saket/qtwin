@@ -21,9 +21,10 @@ class DensityMatrixUtils(BaseComponent):
     @staticmethod
     def fidelity(rho: torch.Tensor, sigma: torch.Tensor) -> torch.Tensor:
         evals, evecs = torch.linalg.eigh(rho)
-        sqrt_diag = torch.diag_embed(torch.sqrt(torch.clamp(evals, min=0.0)))
+        real_evals = torch.clamp(evals.real, min=0.0)
+        sqrt_diag = torch.diag_embed(torch.sqrt(real_evals)).to(evecs.dtype)
         sqrt_rho = evecs @ sqrt_diag @ evecs.conj().transpose(-1, -2)
         inner = sqrt_rho @ sigma @ sqrt_rho
         evals_inner = torch.linalg.eigvals(inner)
-        return torch.real(torch.sum(torch.sqrt(torch.clamp(evals_inner, min=0.0)), dim=-1))
-
+        evals_inner_real = torch.clamp(torch.real(evals_inner), min=0.0)
+        return torch.sum(torch.sqrt(evals_inner_real), dim=-1)

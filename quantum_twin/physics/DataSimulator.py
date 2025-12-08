@@ -17,10 +17,11 @@ from quantum_twin.physics.SchrodingerSolver import SchrodingerSolver
 class DataSimulator(BaseComponent):
     """Generates synthetic qubit trajectories via Schrödinger or Lindblad dynamics."""
 
-    def __init__(self, params: Dict[str, float]) -> None:
+    def __init__(self, **params) -> None:
         super().__init__()
         self._params = params
         self._device = params.get("device", "cpu")
+        self._output_path = Path(params.get("output_path")) if params.get("output_path") else None
         self._pulse_gen = PulseGenerator(scale=float(params.get("pulse_scale", 0.5)))
         self._hamiltonian = Hamiltonian(drift=float(params.get("drift", 0.0)))
         self._lindblad_ops = LindbladOperators(
@@ -48,8 +49,15 @@ class DataSimulator(BaseComponent):
                 control_list.append(controls)
                 rho_list.append(rho_point)
         device = torch.device(self._device)
-        t_tensor = torch.tensor(np.array(t_list), dtype=torch.double, device=device)
-        control_tensor = torch.tensor(np.array(control_list), dtype=torch.double, device=device)
-        rho_tensor = torch.tensor(np.array(rho_list), dtype=torch.cdouble, device=device)
+        float_dtype = torch.float32 if str(device).startswith("mps") else torch.double
+        complex_dtype = torch.cfloat if float_dtype == torch.float32 else torch.cdouble
+        t_tensor = torch.tensor(np.array(t_list), dtype=float_dtype, device=device)
+        control_tensor = torch.tensor(np.array(control_list), dtype=float_dtype, device=device)
+        rho_tensor = torch.tensor(np.array(rho_list), dtype=complex_dtype, device=device)
+        dataset = {"t": t_tensor, "controls": control_tensor, "rho": rho_tensor}
+        if self._output_path:
+            self._output_path.parent.mkdir(parents=True, exist_ok=True)
+            torch.save(dataset, self._output_path)
+            self.logger.info("Saved dataset to %s", self._output_path)
         self.logger.info("Generated dataset total samples=%d", len(t_tensor))
-        return {"t": t_tensor, "controls": control_tensor, "rho": rho_tensor}
+        return dataset

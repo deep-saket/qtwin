@@ -9,7 +9,7 @@ from quantum_twin.core.BaseComponent import BaseComponent
 class OptimizerBase(BaseComponent, ABC):
     """Abstract base class for optimisation routines."""
 
-    def __init__(self, params: Dict[str, Any]) -> None:
+    def __init__(self, **params: Dict[str, Any]) -> None:
         super().__init__()
         self._params = params
         self._device = params.get("device", "cpu")
