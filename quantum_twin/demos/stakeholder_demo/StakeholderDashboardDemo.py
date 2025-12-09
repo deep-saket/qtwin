@@ -17,5 +17,5 @@ class StakeholderDashboardDemo(BaseDemo):
 
 
 if __name__ == "__main__":
-    demo = StakeholderDashboardDemo()
+    demo = StakeholderDashboardDemo(launch_dash=True)
     demo.run_demo()

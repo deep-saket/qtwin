@@ -84,11 +84,14 @@ pm.render_all(dummy)
 PY
 ```
 
-10) **View plots via Dash web app**
+10) **Interactive plots via Dash web app**
 ```bash
-# Generate plots first (e.g., run a demo), then launch the viewer
+# Option A: static gallery (if dash installed)
 python -m quantum_twin.demos.dash_app --outputs outputs --port 8050
-# Open http://localhost:8050 to interactively view the gallery (auto-refreshes every 5s)
+
+# Option B: interactive Plotly Dash (hover/click on points)
+python -m quantum_twin.demos.dash_interactive
+# Open http://localhost:8050 to interactively explore Bloch trajectory, populations, heatmap
 ```
 
 ## Config Structure (step format)

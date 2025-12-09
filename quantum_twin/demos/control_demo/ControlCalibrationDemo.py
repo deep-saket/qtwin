@@ -23,5 +23,5 @@ class ControlCalibrationDemo(BaseDemo):
 
 
 if __name__ == "__main__":
-    demo = ControlCalibrationDemo()
+    demo = ControlCalibrationDemo(launch_dash=True)
     demo.run_demo()

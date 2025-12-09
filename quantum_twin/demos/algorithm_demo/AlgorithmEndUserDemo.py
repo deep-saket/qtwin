@@ -22,5 +22,5 @@ class AlgorithmEndUserDemo(BaseDemo):
 
 
 if __name__ == "__main__":
-    demo = AlgorithmEndUserDemo()
+    demo = AlgorithmEndUserDemo(launch_dash=True)
     demo.run_demo()

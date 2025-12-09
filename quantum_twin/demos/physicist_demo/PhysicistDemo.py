@@ -23,5 +23,5 @@ class PhysicistDemo(BaseDemo):
 
 
 if __name__ == "__main__":
-    demo = PhysicistDemo()
+    demo = PhysicistDemo(launch_dash=True)
     demo.run_demo()
