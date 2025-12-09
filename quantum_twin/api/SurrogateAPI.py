@@ -6,7 +6,6 @@ import torch
 
 from quantum_twin.core.BaseComponent import BaseComponent
 from quantum_twin.deployment.ModelWrapper import ModelWrapper
-from quantum_twin.model.PINNModel import PINNModel
 from quantum_twin.models.ModelFactory import ModelFactory
 
 
